@@ -14,7 +14,6 @@ public:
     void showHeroes();
     int getSize();
     void showHeroesWithIndex();
-    void removeHero(int index);
-    bool gameOver();
     hero *getHero(int index);
+    int getAliveCount();
 };

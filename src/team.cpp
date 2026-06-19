@@ -34,22 +34,29 @@ void team::showHeroesWithIndex()
 {
     for (int i = 0; i < heroes.size(); i++)
     {
-        cout << i + 1 << ". "
-             << left << setw(20)
-             << heroes[i]->getName()
-             << " HP: "
-             << heroes[i]->getHp()
-             << endl;
+        if (heroes[i]->getHp() > 0)
+        {
+            cout << i + 1 << ". " << left << setw(20)
+                 << heroes[i]->getName()
+                 << " HP : " << heroes[i]->getHp()
+                 << endl;
+        }
+        else
+        {
+            cout << i + 1 << ". " << left << setw(20)
+                 << heroes[i]->getName()
+                 << " { DEAD }" << endl;
+        }
     }
 }
 
-void team::removeHero(int index)
+int team::getAliveCount()
 {
-    heroes.erase(heroes.begin() + index);
+    int count = 0;
+    for (hero *h : heroes)
+    {
+        if (h->getHp() > 0)
+            count++;
+    }
+    return count;
 }
-
-bool team::gameOver()
-{
-    return heroes.empty();
-}
-

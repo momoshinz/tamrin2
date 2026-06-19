@@ -50,7 +50,7 @@ void Game::selectHeroes(int teamNum)
 
         if (exists)
         {
-            cout << "\nHERO ALREADY SELECTED!\n~ Try again\n";
+            cout << "\nHERO ALREADY SELECTED!\nTry again\n";
             i--;
             continue;
         }
@@ -82,11 +82,34 @@ void Game::selectHeroes(int teamNum)
     }
 }
 
+int Game::checkWinner()
+{
+    int alive1 = team1.getAliveCount();
+    int alive2 = team2.getAliveCount();
+
+    if (alive1 > 0 && alive2 == 0)
+        return 1;
+    if (alive2 > 0 && alive1 == 0)
+        return 2;
+    if (alive1 == 0 && alive2 == 0)
+        return 0;
+    return -1;
+}
+
 void Game::startGame()
 {
     for (int round = 1; round <= 15; round++)
     {
         cout << "\n==================== Round " << round << " ====================\n";
+
+        for (int i = 0; i < team1.getSize(); i++)
+        {
+            team1.getHero(i)->increaseRage();
+        }
+        for (int i = 0; i < team2.getSize(); i++)
+        {
+            team2.getHero(i)->increaseRage();
+        }
 
         int energy1 = getEnergyTeam1(round);
         int energy2 = getEnergyTeam2(round);
@@ -94,18 +117,61 @@ void Game::startGame()
         cout << "Team 2 *** Energy: " << energy2 << endl;
 
         teamTurn(team1, team2, energy1);
-        if (team1.gameOver())
+        int winner = checkWinner();
+        if (winner == 1)
         {
-            cout << "\n---* TEAM 2 WINS! *---\n";
+            cout << "\n*** TEAM 1 WINS! ***\n";
+            return;
+        }
+        else if (winner == 2)
+        {
+            cout << "\n*** TEAM 2 WINS! ***\n";
+            return;
+        }
+        else if (winner == 0)
+        {
+            cout << "\nDRAW! .. { NO TEAM WINS }\n";
             return;
         }
 
         teamTurn(team2, team1, energy2);
-        if (team2.gameOver())
+        winner = checkWinner();
+        if (winner == 1)
         {
-            cout << "\n---* TEAM 1 WINS! *---\n";
+            cout << "\n*** TEAM 1 WINS! ***\n";
             return;
         }
+        else if (winner == 2)
+        {
+            cout << "\n*** TEAM 2 WINS! ***\n";
+            return;
+        }
+        else if (winner == 0)
+        {
+            cout << "\nDRAW! .. { NO TEAM WINS }\n";
+            return;
+        }
+    }
+
+    cout << "\n==================== END OF 15 ROUNDS ====================\n";
+
+    int alive1 = team1.getAliveCount();
+    int alive2 = team2.getAliveCount();
+
+    cout << "\nTeam 1 Alive Heroes : " << alive1 << "\n";
+    cout << "Team 2 Alive Heroes : " << alive2 << "\n";
+
+    if (alive1 > alive2)
+    {
+        cout << "\n*** TEAM 1 WINS! ***\n";
+    }
+    else if (alive2 > alive1)
+    {
+        cout << "\n*** TEAM 2 WINS! ***\n";
+    }
+    else
+    {
+        cout << "\nDRAW! .. { Equal number of heroes alive }\n";
     }
 }
 
@@ -124,9 +190,9 @@ int Game::getEnergyTeam1(int round)
 int Game::getEnergyTeam2(int round)
 {
     if (round == 1)
-        return 9;
-    if (round == 2)
         return 8;
+    if (round == 2)
+        return 9;
 
     return 10;
 }
@@ -142,27 +208,34 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
 
         int heroChoice;
 
-        cout << "\n~ Choose Hero : ";
+        cout << "\n> Choose Hero : ";
         cin >> heroChoice;
 
         while (heroChoice < 1 || heroChoice > currentTeam.getSize())
         {
-            cout << "INVALID HERO!\n"
-                 << "~ Try again.";
+            cout << "\nINVALID HERO!\n"
+                 << "Try again.\n";
             cin >> heroChoice;
         }
 
         hero *Hero = currentTeam.getHero(heroChoice - 1);
 
-        cout << "\n1. Ability 1\n";
-        cout << "2. Ability 2\n";
-        cout << "3. Special Ability\n";
+        if (Hero->getHp() <= 0)
+        {
+            cout << "\nThis hero is DEAD! Choose another one.\n";
+            continue;
+        }
 
+        cout << "\n1. " << left << setw(20) << Hero->getAbilityName(1) << " { Cost : " << Hero->getAbility1Cost() << " }\n";
+        cout << "2. " << left << setw(20) << Hero->getAbilityName(2) << " { Cost : " << Hero->getAbility2Cost() << " }\n";
+        cout << "3. " << left << setw(20) << Hero->getAbilityName(3) << " { Cost : " << Hero->getSpecialCost() << " }\n";
+        cout << "4. END TURN\n";
         int abilityChoice;
-        cout << "\nChoose your ability : ";
+        cout << "\n> Choose your ability : ";
         cin >> abilityChoice;
 
         int cost = 0;
+        bool endTurn = false;
         switch (abilityChoice)
         {
         case 1:
@@ -172,11 +245,28 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
             cost = Hero->getAbility2Cost();
             break;
         case 3:
+            if (!Hero->isSpecialReady())
+            {
+                cout << "\nSPECIAL ABILITY IS NOT READY YET!\n";
+                cout << "Need " << Hero->getRageRequired() << " rounds. { Current : "
+                     << Hero->getRageCounter() << "/" << Hero->getRageRequired() << " }\n";
+                continue;
+            }
             cost = Hero->getSpecialCost();
             break;
+        case 4:
+            cout << "\n " << (teamNum == 1 ? "Team 1" : "Team 2")
+                 << "ENDED THEIR TURN MANUALLY!\n";
+            endTurn = true;
+            break;
         default:
-            cout << "INVALID ABILITY!\n";
+            cout << "\nINVALID ABILITY!\n";
             continue;
+        }
+
+        if (endTurn)
+        {
+            break;
         }
 
         if (cost > energy)
@@ -200,7 +290,7 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 currentTeam.showHeroesWithIndex();
 
                 int targetChoice;
-                cout << "\nChoose a teammate : ";
+                cout << "\n> Choose a teammate : ";
                 cin >> targetChoice;
                 target = currentTeam.getHero(targetChoice - 1);
             }
@@ -210,7 +300,7 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 enemyTeam.showHeroesWithIndex();
 
                 int targetChoice;
-                cout << "\nChoose an enemy : ";
+                cout << "\n> Choose an enemy : ";
                 cin >> targetChoice;
                 target = enemyTeam.getHero(targetChoice - 1);
             }
@@ -230,19 +320,25 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
             break;
         case 3:
             Hero->specialAbility(&currentTeam, &enemyTeam);
+            Hero->resetRage();
             break;
         }
 
-        if (!autoTarget && target && target->getHp() == 0 && abilityChoice != 2)
+        if (!autoTarget && target && target->getHp() == 0)
         {
             cout << target->getName()
-                 << " HAS BEEN ELIMINATED!\n";
+                 << " IS ELIMINATED!\n";
         }
 
         energy -= cost;
 
-        cout << "\n*Team Remaining Energy : "
+        cout << "\n** Team Remaining Energy : "
              << energy
              << '\n';
+
+        if (energy == 0)
+        {
+            cout << "\nTeam " << teamNum << " RAN OUT OF ENERGY! TURN ENDS.\n";
+        }
     }
 }

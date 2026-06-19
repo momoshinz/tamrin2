@@ -22,6 +22,9 @@ protected:
     int shieldDuration = 0;
     bool isInvisible = false;
     int invisibleDuration = 0;
+    int rageCounter = 0;
+    int rageRequired = 0;
+    bool specialReady = false;
 
 public:
     hero(string n, int h)
@@ -35,11 +38,12 @@ public:
     virtual void ability1(hero *target, team *myTeam, team *enemyTeam) = 0;
     virtual void ability2(hero *target, team *myTeam, team *enemyTeam) = 0;
     virtual void specialAbility(team *myTeam, team *enemyTeam) = 0;
+    virtual string getAbilityName(int abilityNum) { return ""; }
     virtual void abilityMessage(int abilityNum) {}
     virtual bool isTargetFromOwnTeam(int abilityNum) { return false; }
     virtual bool isAutoTarget(int abilityNum) { return false; }
     void takeDamage(int damage);
-    void takeAreaDamage(int damage);  
+    void takeAreaDamage(int damage);
     int getAbility1Cost();
     int getAbility2Cost();
     int getSpecialCost();
@@ -65,6 +69,12 @@ public:
     bool getInvisible();
     void reduceInvisibleDuration();
     void applyInvisibility();
+    void setRageRequired(int rounds);
+    void increaseRage();
+    bool isSpecialReady();
+    void resetRage();
+    int getRageCounter();
+    int getRageRequired();
 
     virtual ~hero() {}
 };

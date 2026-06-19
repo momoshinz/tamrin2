@@ -12,5 +12,6 @@ class Game
       int getEnergyTeam1(int round);
       int getEnergyTeam2(int round);
       void teamTurn(team &currentTeam, team &enemyTeam, int &energy);
+      int checkWinner();
 
 };

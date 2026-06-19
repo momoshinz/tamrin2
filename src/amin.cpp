@@ -12,6 +12,7 @@ aminImeni::aminImeni() : hero("Amin Imeni", 500)
     ability1Cost = 3;
     ability2Cost = 3;
     specialCost = 4;
+    setRageRequired(3);
 }
 
 void aminImeni::ability1(hero *target, team *myTeam, team *enemyTeam)
@@ -87,21 +88,32 @@ void aminImeni::specialAbility(team *myTeam, team *enemyTeam)
     }
 }
 
+string aminImeni::getAbilityName(int abilityNum)
+{
+    if (abilityNum == 1)
+        return "Last Bullet";
+    if (abilityNum == 2)
+        return "Self Hit";
+    if (abilityNum == 3)
+        return "Panic Shout";
+    return "";
+}
+
 void aminImeni::abilityMessage(int abilityNum)
 {
     if (abilityNum == 1)
     {
-        cout << "\nLAST BULLET . . .\n";
-        cout << "\nDeal 55 damage to an enemy.\n{DOUBLED TO 110 IF IT KILLS!}\n";
+        cout << "\n> LAST BULLET . . .\n";
+        cout << "\nDeal 55 damage to an enemy.\n{ DOUBLED TO 110 IF IT KILLS! }\n";
     }
     else if (abilityNum == 2)
     {
-        cout << "\nSELF HIT . . .\n";
+        cout << "\n> SELF HIT . . .\n";
         cout << "\nTake 25 HP from a teammate, heal self by 75 HP!\n";
     }
     else if (abilityNum == 3)
     {
-        cout << "\n-[PANIC SHOUT]- \"ONE ... TWO ... THREE ... BOOM!\"\n";
+        cout << "\n-[PANIC SHOUT]- \"ONE ... TWO ... THREE ... BOOM! ... WHO'S LEFT? DOESNT MATTER ..\"\n";
         cout << "\n250 damage to a random enemy and 30 damage to 2 teammates!\n";
     }
 }

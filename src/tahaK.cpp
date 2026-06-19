@@ -10,6 +10,7 @@ tahaK::tahaK()
     ability1Cost = 2;
     ability2Cost = 4;
     specialCost = 4;
+    setRageRequired(3);
 }
 
 void tahaK::ability1(hero *target, team *myTeam, team *enemyTeam)
@@ -45,7 +46,7 @@ void tahaK::ability1(hero *target, team *myTeam, team *enemyTeam)
          << "   New HP : " << target->getHp() << '\n';
 }
 
-void tahaK::ability2(hero* target, team* myTeam, team* enemyTeam)
+void tahaK::ability2(hero *target, team *myTeam, team *enemyTeam)
 {
     target->addHealOverTime(40, 2);
     cout << "\n-> " << target->getName()
@@ -60,7 +61,7 @@ void tahaK::specialAbility(team *myTeam, team *enemyTeam)
     for (int i = 0; i < myTeam->getSize(); i++)
     {
         hero *member = myTeam->getHero(i);
-        if (member->getHp() > 0 && member !=this && member->getHp() < minHp)
+        if (member->getHp() > 0 && member != this && member->getHp() < minHp)
         {
             minHp = member->getHp();
             lowestHpTeammate = member;
@@ -81,17 +82,28 @@ void tahaK::specialAbility(team *myTeam, team *enemyTeam)
     }
 }
 
+string tahaK::getAbilityName(int abilityNum)
+{
+    if (abilityNum == 1)
+        return "Sharp Blade";
+    if (abilityNum == 2)
+        return "Blood Serum";
+    if (abilityNum == 3)
+        return "Full Quarantine";
+    return "";
+}
+
 void tahaK::abilityMessage(int abilityNum)
 {
     if (abilityNum == 1)
     {
         cout << "\n> SHARP BLADE . . .\n";
-        cout << "\nLowest HP teammate will be healed by 20 HP!\nAn enemy should be damaged 30 HP!\n";
+        cout << "\nLowest HP teammate will be healed by 20 HP!\nChosen enemy will take 30 damage!\n";
     }
     else if (abilityNum == 2)
     {
         cout << "\n> BLOOD SERUM . . .\n";
-        cout << "\nA teammate will be healed 40 HP for 2 rounds.\n";
+        cout << "\nA random teammate will be healed 40 HP for 2 rounds.\n";
     }
     else if (abilityNum == 3)
     {

@@ -9,6 +9,7 @@ DannyGolang::DannyGolang()
     ability1Cost = 2;
     ability2Cost = 4;
     specialCost = 4;
+    setRageRequired(4);
 
     lastTarget = nullptr;
     consecutiveHits = 0;
@@ -90,22 +91,33 @@ void DannyGolang::specialAbility(team *myTeam, team *enemyTeam)
     }
 }
 
+string DannyGolang::getAbilityName(int abilityNum)
+{
+    if (abilityNum == 1)
+        return "Lock";
+    if (abilityNum == 2)
+        return "Elephant Killer";
+    if (abilityNum == 3)
+        return "Family Stronghold";
+    return "";
+}
+
 void DannyGolang::abilityMessage(int abilityNum)
 {
     if (abilityNum == 1)
     {
-        cout << "\nLOCK . . .\n";
-        cout << "\nA chosen enemy will take 20 damage.\n{1.6x IF REPEATED ON SAME TARGET!}\n";
+        cout << "\n> LOCK . . .\n";
+        cout << "\nA chosen enemy will take 20 damage.\n{ 1.6x IF REPEATED ON SAME TARGET! }\n";
     }
     else if (abilityNum == 2)
     {
-        cout << "\nELEPHANT KILLER . . .\n";
-        cout << "\nA chosen enemy and an enemy with highest HP will take 50 damage!\n";
+        cout << "\n> ELEPHANT KILLER . . .\n";
+        cout << "\nA chosen enemy and an enemy with HIGHEST HP will take 50 damage!\n";
     }
     else if (abilityNum == 3)
     {
         cout << "\n-[FAMILY STRONGHOLD]- \"NOBODY CROSSES THIS LINE!\"\n";
-        cout << "\nA teammate with lowest HP will be given 250 shield for 2 rounds!\n";
+        cout << "\nA teammate with LOWEST HP will be given 250 shield for 2 rounds!\n";
     }
 }
 

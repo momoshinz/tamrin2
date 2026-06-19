@@ -16,6 +16,7 @@ DoctorWhite::DoctorWhite()
     ability1Cost = 3;
     ability2Cost = 4;
     specialCost = 4;
+    setRageRequired(4);
 }
 
 void DoctorWhite::ability1(hero *target, team *myTeam, team *enemyTeam)
@@ -36,7 +37,7 @@ void DoctorWhite::ability1(hero *target, team *myTeam, team *enemyTeam)
         int randomIndex = rand() % aliveTeammates.size();
         hero *randomTeammate = aliveTeammates[randomIndex];
         randomTeammate->heal(40);
-        cout << "\n-> " << randomTeammate->getName() << " GOT HEALED!\n    New HP : "
+        cout << "\n-> " << randomTeammate->getName() << " GOT HEALED!\n   New HP : "
              << randomTeammate->getHp() << endl;
     }
     else
@@ -45,11 +46,11 @@ void DoctorWhite::ability1(hero *target, team *myTeam, team *enemyTeam)
     }
 
     target->takeDamage(40);
-    cout << "\n-> " << target->getName() << " GOT DAMAGED!\n    New HP : "
+    cout << "\n-> " << target->getName() << " GOT DAMAGED!\n   New HP : "
          << target->getHp() << endl;
 }
 
-void DoctorWhite::ability2(hero* target, team* myTeam, team* enemyTeam)
+void DoctorWhite::ability2(hero *target, team *myTeam, team *enemyTeam)
 {
     target->addDamageBuff(20, 2);
 
@@ -65,12 +66,23 @@ void DoctorWhite::specialAbility(team *myTeam, team *enemyTeam)
         if (member != this && member->getHp() == 0)
         {
             member->revive(200);
-            cout << "\n -> " << member->getName() << " IS REVIVED!\n    New HP : ";
+            cout << "\n-> " << member->getName() << " IS REVIVED!\n   New HP : ";
             return;
         }
     }
 
-    cout << "\nNO DEAD TEAMMATE TO REVIVE YET!\n";
+    cout << "\nNO DEAD TEAMMATE TO REVIVE!\n";
+}
+
+string DoctorWhite::getAbilityName(int abilityNum)
+{
+    if (abilityNum == 1)
+        return "Aspirin";
+    if (abilityNum == 2)
+        return "Doping";
+    if (abilityNum == 3)
+        return "Operation Room";
+    return "";
 }
 
 void DoctorWhite::abilityMessage(int abilityNum)
@@ -78,17 +90,17 @@ void DoctorWhite::abilityMessage(int abilityNum)
     if (abilityNum == 1)
     {
         cout << "\n> ASPIRIN . . .\n";
-        cout << "\nA random teammate will be healed by 40 HP\nAn enemy should be damaged with 40 HP!\n";
+        cout << "\nA random teammate will be healed by 40 HP\nChosen enemy will take 40 damage!\n";
     }
     else if (abilityNum == 2)
     {
         cout << "\n> DOPING . . .\n";
-        cout << "\nA chosen teammate will be given 20 percent damage buff for 2 rounds!\n";
+        cout << "\nChosen teammate will be given 20 percent DAMAGE BUFF for 2 rounds!\n";
     }
     else if (abilityNum == 3)
     {
-        cout << "\n-[OPERATION ROOM]- \"BRING HIM TO THE TABLE ... HE'LL SURVIVE IS HE'S LUCKY!\"\n";
-        cout << "A dead teammate will be Revived with 200 HP!\n";
+        cout << "\n-[OPERATION ROOM]- \"BRING HIM TO THE TABLE ... HE'LL SURVIVE IF HE'S LUCKY!\"\n";
+        cout << "A dead teammate will be REVIVED with 200 HP!\n";
     }
 }
 

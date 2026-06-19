@@ -11,6 +11,7 @@ tahaB::tahaB()
     ability1Cost = 3;
     ability2Cost = 4;
     specialCost = 3;
+    setRageRequired(4);
 
     markedEnemy = nullptr;
     markedRound = 0;
@@ -84,7 +85,7 @@ void tahaB::specialAbility(team *myTeam, team *enemyTeam)
 
     if (markedEnemy->getHp() <= 360)
     {
-        cout << "\n[!] WARNING: " << markedEnemy->getName()
+        cout << "\n[!] WARNING : " << markedEnemy->getName()
              << " WILL DIE NEXT ROUND!\n";
     }
 }
@@ -129,24 +130,35 @@ void tahaB::applyMarkDamage(team *enemyTeam)
     markedRound = 0;
 }
 
+string tahaB::getAbilityName(int abilityNum)
+{
+    if (abilityNum == 1)
+        return "Volley";
+    if (abilityNum == 2)
+        return "X-Ray";
+    if (abilityNum == 3)
+        return "Brother's revenge";
+    return "";
+}
+
 void tahaB::abilityMessage(int abilityNum)
 {
     if (abilityNum == 1)
     {
-        cout << "\nVOLLEY . . .\n";
+        cout << "\n> VOLLEY . . .\n";
         cout << "\n30 damage to ALL enemies!\n";
     }
     else if (abilityNum == 2)
     {
-        cout << "\nX-RAY . . .\n";
-        cout << "\nChosen enemy will take 90 damage!\n{BECOME INVISIBLE FOR 1 ROUND!}\n";
+        cout << "\n> X-RAY . . .\n";
+        cout << "\nChosen enemy will take 90 damage!\n{ BECOME INVISIBLE FOR 1 ROUND! }\n";
     }
     else if (abilityNum == 3)
     {
         cout << "\n-[BROTHER'S REVENGE]- \"THIS ONE WAS FOR MY LITTLE BROTHER ... NOW ITS YOUR TURN!!\"\n";
-        cout << "\nA random enemy will be marked for 360 damage next round!\n";
-        cout << "* If HP LESS THAN 360: INSTANT KILL!\n";
-        cout << "* If HP MORE THAN 360: takes 200 damage instead!\n";
+        cout << "\nA random enemy will be MARKED for 360 damage next round!\n";
+        cout << "* If HP LESS than 360 --> INSTANT KILL!\n";
+        cout << "* If HP MORE than 360 --> takes 200 damage instead!\n";
     }
 }
 

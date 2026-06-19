@@ -224,3 +224,43 @@ void hero::applyInvisibility()
         reduceInvisibleDuration();
     }
 }
+
+void hero::setRageRequired(int rounds)
+{
+    rageRequired = rounds;
+    rageCounter = 0;
+    specialReady = false;
+}
+
+void hero::increaseRage()
+{
+    if (!specialReady && rageCounter < rageRequired)
+    {
+        rageCounter++;
+        if (rageCounter >= rageRequired)
+        {
+            specialReady = true;
+        }
+    }
+}
+
+bool hero::isSpecialReady()
+{
+    return specialReady;
+}
+
+void hero::resetRage()
+{
+    rageCounter = 0;
+    specialReady = false;
+}
+
+int hero::getRageCounter()
+{
+    return rageCounter;
+}
+
+int hero::getRageRequired()
+{
+    return rageRequired;
+}
