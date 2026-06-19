@@ -1,0 +1,3 @@
+C:/Users/IT ZOOM/Desktop/tamrin2/build/CMakeFiles/tamrin2.dir
+C:/Users/IT ZOOM/Desktop/tamrin2/build/CMakeFiles/edit_cache.dir
+C:/Users/IT ZOOM/Desktop/tamrin2/build/CMakeFiles/rebuild_cache.dir
