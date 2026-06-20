@@ -113,8 +113,8 @@ void Game::startGame()
 
         int energy1 = getEnergyTeam1(round);
         int energy2 = getEnergyTeam2(round);
-        cout << "Team 1 *** Energy: " << energy1 << endl;
-        cout << "Team 2 *** Energy: " << energy2 << endl;
+        cout << "Team 1 *** Energy : " << energy1 << endl;
+        cout << "Team 2 *** Energy : " << energy2 << endl;
 
         teamTurn(team1, team2, energy1);
         int winner = checkWinner();
@@ -255,8 +255,9 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
             cost = Hero->getSpecialCost();
             break;
         case 4:
-            cout << "\n " << (teamNum == 1 ? "Team 1" : "Team 2")
-                 << "ENDED THEIR TURN MANUALLY!\n";
+            cout << "\n"
+                 << (teamNum == 1 ? "TEAM 1" : "TEAM 2")
+                 << " ENDED THEIR TURN MANUALLY!\n";
             endTurn = true;
             break;
         default:
@@ -292,6 +293,12 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose a teammate : ";
                 cin >> targetChoice;
+                while (targetChoice < 1 || targetChoice > currentTeam.getSize())
+                {
+                    cout << "\nINVALID HERO!\n"
+                         << "Try again.\n";
+                    cin >> targetChoice;
+                }
                 target = currentTeam.getHero(targetChoice - 1);
             }
             else
@@ -302,6 +309,12 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose an enemy : ";
                 cin >> targetChoice;
+                while (targetChoice < 1 || targetChoice > enemyTeam.getSize())
+                {
+                    cout << "\nINVALID HERO!\n"
+                         << "Try again.\n";
+                    cin >> targetChoice;
+                }
                 target = enemyTeam.getHero(targetChoice - 1);
             }
         }
@@ -326,7 +339,7 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
 
         if (!autoTarget && target && target->getHp() == 0)
         {
-            cout << target->getName()
+            cout << "\n[!] " << target->getName()
                  << " IS ELIMINATED!\n";
         }
 

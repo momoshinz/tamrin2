@@ -90,7 +90,7 @@ void DoctorWhite::abilityMessage(int abilityNum)
     if (abilityNum == 1)
     {
         cout << "\n> ASPIRIN . . .\n";
-        cout << "\nA random teammate will be healed by 40 HP\nChosen enemy will take 40 damage!\n";
+        cout << "\nA random teammate will be healed by 40 HP!\nChosen enemy will take 40 damage!\n";
     }
     else if (abilityNum == 2)
     {

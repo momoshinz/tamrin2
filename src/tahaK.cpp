@@ -103,7 +103,7 @@ void tahaK::abilityMessage(int abilityNum)
     else if (abilityNum == 2)
     {
         cout << "\n> BLOOD SERUM . . .\n";
-        cout << "\nA random teammate will be healed 40 HP for 2 rounds.\n";
+        cout << "\nChosen teammate will be healed 40 HP for 2 rounds!\n";
     }
     else if (abilityNum == 3)
     {
