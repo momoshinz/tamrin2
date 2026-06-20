@@ -104,6 +104,15 @@ void Game::startGame()
 
         for (int i = 0; i < team1.getSize(); i++)
         {
+            team1.getHero(i)->reduceInvisibleDuration();
+        }
+        for (int i = 0; i < team2.getSize(); i++)
+        {
+            team2.getHero(i)->reduceInvisibleDuration();
+        }
+        
+        for (int i = 0; i < team1.getSize(); i++)
+        {
             team1.getHero(i)->increaseRage();
         }
         for (int i = 0; i < team2.getSize(); i++)
