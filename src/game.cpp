@@ -147,6 +147,17 @@ void Game::startGame()
             team2.getHero(i)->decreaseDuration();
         }
 
+        for (int i = 0; i < team1.getSize(); i++) // for tahaK and danny
+        {
+            team1.getHero(i)->applyHealOverTime();
+            team1.getHero(i)->reduceShieldDuration();
+        }
+        for (int i = 0; i < team2.getSize(); i++)
+        {
+            team2.getHero(i)->applyHealOverTime();
+            team2.getHero(i)->reduceShieldDuration();
+        }
+
         int energy1 = getEnergyTeam1(round);
         int energy2 = getEnergyTeam2(round);
         cout << "\nTeam 1 *** Energy : " << energy1 << endl;
