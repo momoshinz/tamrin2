@@ -102,6 +102,24 @@ void Game::startGame()
     {
         cout << "\n==================== Round " << round << " ====================\n";
 
+        for (int i = 0; i < team1.getSize(); i++)
+        {
+            tahaB *tahaBptr = dynamic_cast<tahaB *>(team1.getHero(i));
+            if (tahaBptr != nullptr)
+            {
+                tahaBptr->applyMarkDamage(&team2);
+            }
+        }
+
+        for (int i = 0; i < team2.getSize(); i++)
+        {
+            tahaB *tahaBptr = dynamic_cast<tahaB *>(team2.getHero(i));
+            if (tahaBptr != nullptr)
+            {
+                tahaBptr->applyMarkDamage(&team1);
+            }
+        }
+
         for (int i = 0; i < team1.getSize(); i++) // invisiblty for tahaB
         {
             team1.getHero(i)->reduceInvisibleDuration();
@@ -131,7 +149,7 @@ void Game::startGame()
 
         int energy1 = getEnergyTeam1(round);
         int energy2 = getEnergyTeam2(round);
-        cout << "Team 1 *** Energy : " << energy1 << endl;
+        cout << "\nTeam 1 *** Energy : " << energy1 << endl;
         cout << "Team 2 *** Energy : " << energy2 << endl;
 
         teamTurn(team1, team2, energy1);
@@ -197,7 +215,7 @@ void Game::startGame()
     }
     else
     {
-        cout << "\n====================" << "\nDRAW! .. { Equal number of heroes alive }\n"
+        cout << "\n====================" << "\nDRAW! .. { Equal number of heroes alive }"
              << "\n====================";
     }
 }
@@ -239,8 +257,8 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
 
         while (heroChoice < 1 || heroChoice > currentTeam.getSize())
         {
-            cout << "\nINVALID HERO!\n"
-                 << "Try again.\n";
+            cout << "\nINVALID HERO! Try again.\n"
+                 << "> ";
             cin >> heroChoice;
         }
 
@@ -319,20 +337,31 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose a teammate : ";
                 cin >> targetChoice;
-                while (target->getHp() <= 0)
+
+                while (targetChoice < 1 || targetChoice > currentTeam.getSize())
                 {
-                    target = currentTeam.getHero(targetChoice - 1);
-                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "\nINVALID HERO! Try again.\n";
                     cout << "> ";
                     cin >> targetChoice;
                 }
-                while (targetChoice < 1 || targetChoice > currentTeam.getSize())
+
+                target = currentTeam.getHero(targetChoice - 1);
+
+                while (target->getHp() <= 0)
                 {
-                    cout << "\nINVALID HERO!\n"
-                         << "Try again.\n";
+                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "> ";
                     cin >> targetChoice;
+                    while (targetChoice < 1 || targetChoice > currentTeam.getSize())
+                    {
+                        cout << "\nINVALID HERO! Try again.\n";
+                        cout << "> ";
+                        cin >> targetChoice;
+                    }
+                    target = currentTeam.getHero(targetChoice - 1);
                 }
             }
+
             else
             {
                 cout << "\n-< ENEMY HEROES >-\n";
@@ -341,18 +370,28 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose an enemy : ";
                 cin >> targetChoice;
-                while (target->getHp() <= 0)
+
+                while (targetChoice < 1 || targetChoice > enemyTeam.getSize())
                 {
-                    target = enemyTeam.getHero(targetChoice - 1);
-                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "\nINVALID HERO! Try again.\n";
                     cout << "> ";
                     cin >> targetChoice;
                 }
-                while (targetChoice < 1 || targetChoice > enemyTeam.getSize())
+
+                target = enemyTeam.getHero(targetChoice - 1);
+
+                while (target->getHp() <= 0)
                 {
-                    cout << "\nINVALID HERO!\n"
-                         << "Try again.\n";
+                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "> ";
                     cin >> targetChoice;
+                    while (targetChoice < 1 || targetChoice > enemyTeam.getSize())
+                    {
+                        cout << "\nINVALID HERO! Try again.\n";
+                        cout << "> ";
+                        cin >> targetChoice;
+                    }
+                    target = enemyTeam.getHero(targetChoice - 1);
                 }
             }
         }

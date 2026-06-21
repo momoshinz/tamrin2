@@ -66,7 +66,7 @@ void DoctorWhite::specialAbility(team *myTeam, team *enemyTeam)
         if (member != this && member->getHp() == 0)
         {
             member->revive(200);
-            cout << "\n-> " << member->getName() << " IS REVIVED!\n   New HP : ";
+            cout << "\n-> " << member->getName() << " IS REVIVED!\n   New HP : " << member->getHp() << '\n';
             return;
         }
     }
@@ -100,7 +100,7 @@ void DoctorWhite::abilityMessage(int abilityNum)
     else if (abilityNum == 3)
     {
         cout << "\n-[OPERATION ROOM]- \"BRING HIM TO THE TABLE ... HE'LL SURVIVE IF HE'S LUCKY!\"\n";
-        cout << "A dead teammate will be REVIVED with 200 HP!\n";
+        cout << "\nA dead teammate will be REVIVED with 200 HP!\n";
     }
 }
 
