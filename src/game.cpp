@@ -102,7 +102,7 @@ void Game::startGame()
     {
         cout << "\n==================== Round " << round << " ====================\n";
 
-        for (int i = 0; i < team1.getSize(); i++)
+        for (int i = 0; i < team1.getSize(); i++) // invisiblty for tahaB
         {
             team1.getHero(i)->reduceInvisibleDuration();
         }
@@ -110,14 +110,23 @@ void Game::startGame()
         {
             team2.getHero(i)->reduceInvisibleDuration();
         }
-        
-        for (int i = 0; i < team1.getSize(); i++)
+
+        for (int i = 0; i < team1.getSize(); i++) // for special ability
         {
             team1.getHero(i)->increaseRage();
         }
         for (int i = 0; i < team2.getSize(); i++)
         {
             team2.getHero(i)->increaseRage();
+        }
+
+        for (int i = 0; i < team1.getSize(); i++) // for damage buff
+        {
+            team1.getHero(i)->decreaseDuration();
+        }
+        for (int i = 0; i < team2.getSize(); i++)
+        {
+            team2.getHero(i)->decreaseDuration();
         }
 
         int energy1 = getEnergyTeam1(round);
@@ -129,17 +138,20 @@ void Game::startGame()
         int winner = checkWinner();
         if (winner == 1)
         {
-            cout << "\n*** TEAM 1 WINS! ***\n";
+            cout << "\n====================" << "\n*** TEAM 1 WINS! ***"
+                 << "\n====================";
             return;
         }
         else if (winner == 2)
         {
-            cout << "\n*** TEAM 2 WINS! ***\n";
+            cout << "\n====================" << "\n*** TEAM 2 WINS! ***"
+                 << "\n====================";
             return;
         }
         else if (winner == 0)
         {
-            cout << "\nDRAW! .. { NO TEAM WINS }\n";
+            cout << "\n========================" << "\nDRAW! .. { NO TEAM WINS }"
+                 << "\n========================";
             return;
         }
 
@@ -147,17 +159,20 @@ void Game::startGame()
         winner = checkWinner();
         if (winner == 1)
         {
-            cout << "\n*** TEAM 1 WINS! ***\n";
+            cout << "\n====================" << "\n*** TEAM 1 WINS! ***"
+                 << "\n====================";
             return;
         }
         else if (winner == 2)
         {
-            cout << "\n*** TEAM 2 WINS! ***\n";
+            cout << "\n====================" << "\n*** TEAM 2 WINS! ***"
+                 << "\n====================";
             return;
         }
         else if (winner == 0)
         {
-            cout << "\nDRAW! .. { NO TEAM WINS }\n";
+            cout << "\n========================" << "\nDRAW! .. { NO TEAM WINS }"
+                 << "\n========================";
             return;
         }
     }
@@ -172,15 +187,18 @@ void Game::startGame()
 
     if (alive1 > alive2)
     {
-        cout << "\n*** TEAM 1 WINS! ***\n";
+        cout << "\n====================" << "\n*** TEAM 1 WINS! ***"
+             << "\n====================";
     }
     else if (alive2 > alive1)
     {
-        cout << "\n*** TEAM 2 WINS! ***\n";
+        cout << "\n====================" << "\n*** TEAM 2 WINS! ***"
+             << "\n====================";
     }
     else
     {
-        cout << "\nDRAW! .. { Equal number of heroes alive }\n";
+        cout << "\n====================" << "\nDRAW! .. { Equal number of heroes alive }\n"
+             << "\n====================";
     }
 }
 
@@ -216,7 +234,6 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
         currentTeam.showHeroesWithIndex();
 
         int heroChoice;
-
         cout << "\n> Choose Hero : ";
         cin >> heroChoice;
 
@@ -302,13 +319,19 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose a teammate : ";
                 cin >> targetChoice;
+                while (target->getHp() <= 0)
+                {
+                    target = currentTeam.getHero(targetChoice - 1);
+                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "> ";
+                    cin >> targetChoice;
+                }
                 while (targetChoice < 1 || targetChoice > currentTeam.getSize())
                 {
                     cout << "\nINVALID HERO!\n"
                          << "Try again.\n";
                     cin >> targetChoice;
                 }
-                target = currentTeam.getHero(targetChoice - 1);
             }
             else
             {
@@ -318,13 +341,19 @@ void Game::teamTurn(team &currentTeam, team &enemyTeam, int &energy)
                 int targetChoice;
                 cout << "\n> Choose an enemy : ";
                 cin >> targetChoice;
+                while (target->getHp() <= 0)
+                {
+                    target = enemyTeam.getHero(targetChoice - 1);
+                    cout << "\nThis hero is DEAD! Choose another one.\n";
+                    cout << "> ";
+                    cin >> targetChoice;
+                }
                 while (targetChoice < 1 || targetChoice > enemyTeam.getSize())
                 {
                     cout << "\nINVALID HERO!\n"
                          << "Try again.\n";
                     cin >> targetChoice;
                 }
-                target = enemyTeam.getHero(targetChoice - 1);
             }
         }
         else

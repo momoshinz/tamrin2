@@ -19,6 +19,13 @@ void hero::setHp(int hp)
 
 void hero::takeDamage(int damage)
 {
+    if (hasDamageBuff())
+    {
+        int bonus = (damage * damagePercent) / 100;
+        damage += bonus;
+        cout << name << " deals " << bonus << " extra damage from buff!\n";
+    }
+
     if (isInvisible)
     {
         cout << "\n** " << name << " IS INVISIBLE! SINGLE-TARGET ATTACK MISSES!\n";
@@ -39,6 +46,13 @@ void hero::takeDamage(int damage)
 
 void hero::takeAreaDamage(int damage)
 {
+    if (hasDamageBuff())
+    {
+        int bonus = (damage * damagePercent) / 100;
+        damage += bonus;
+        cout << name << " deals " << bonus << " extra damage from buff!\n";
+    }
+
     if (shieldAmount > 0)
     {
         reduceShield(damage);
@@ -212,7 +226,6 @@ void hero::reduceInvisibleDuration()
         if (invisibleDuration == 0)
         {
             isInvisible = false;
-            cout << "\n** " << name << " IS NO LONGER INVISIBLE!\n";
         }
     }
 }
